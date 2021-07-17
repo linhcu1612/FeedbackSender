@@ -2,6 +2,6 @@
 
 import React from "react";
 
-export default function SurveyListItem() {
+export default function SurveyNew() {
   return <div></div>;
 }
