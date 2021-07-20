@@ -23,9 +23,6 @@ class Header extends Component {
               <Payments />
             </li>
             <li>
-              <a href='/'>Credits :</a>
-            </li>
-            <li>
               <a href='/api/logout'>Logout</a>
             </li>
           </>
