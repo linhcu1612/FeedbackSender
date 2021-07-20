@@ -22,6 +22,9 @@ class Header extends Component {
             <li>
               <Payments />
             </li>
+            <li style={{ margin: "0 10px", cursor: "default" }}>
+              Credits: {this.props.auth.credits}
+            </li>
             <li>
               <a href='/api/logout'>Logout</a>
             </li>
