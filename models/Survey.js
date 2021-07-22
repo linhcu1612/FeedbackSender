@@ -5,7 +5,10 @@ const { Schema } = mongoose;
 const RecipientSchema = require("./Recipient");
 
 const surveySchema = new Schema({
-  userId: String,
+  _user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   title: String,
   body: String,
   subject: String,
