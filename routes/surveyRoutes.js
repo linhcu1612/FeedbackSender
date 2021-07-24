@@ -13,7 +13,7 @@ module.exports = (app) => {
 
   app.post("/api/surveys", requireLogin, requireCredits, async (req, res) => {
     const { title, subject, body, recipients } = req.body;
-    const survey = await new Survey({
+    const survey = new Survey({
       title,
       body,
       subject,
@@ -26,6 +26,14 @@ module.exports = (app) => {
     });
 
     const mailer = new Mailer(survey, surveyTemplate(survey));
-    mailer.send();
+    try {
+      await mailer.send();
+      await survey.save();
+      req.user.credit--;
+      const user = await req.user.save();
+      res.send(user);
+    } catch (err) {
+      res.status(422).send(err);
+    }
   });
 };
