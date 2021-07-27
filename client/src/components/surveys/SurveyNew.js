@@ -5,37 +5,26 @@ import SurveyForm from "./SurveyForm";
 import SurveyFormReview from "./SurveyFormReview";
 
 class SurveyNew extends Component {
-  constructor(props) {
-    super(props);
-    this.nextPage = this.nextPage.bind(this);
-    this.previousPage = this.previousPage.bind(this);
-    this.state = {
-      page: 1,
-    };
-  }
+  state = { showFormReview: false };
 
-  nextPage() {
-    this.setState({ page: this.state.page + 1 });
-  }
+  renderContent() {
+    if (this.state.showFormReview) {
+      return (
+        <SurveyFormReview
+          onCancel={() => this.setState({ showFormReview: false })}
+        />
+      );
+    }
 
-  previousPage() {
-    this.setState({ page: this.state.page - 1 });
+    return (
+      <SurveyForm
+        onSurveySubmit={() => this.setState({ showFormReview: true })}
+      />
+    );
   }
 
   render() {
-    const { onSubmit } = this.props;
-    const { page } = this.state;
-    return (
-      <>
-        {page === 1 && <SurveyForm onSubmit={this.nextPage} />}
-        {page === 2 && (
-          <SurveyFormReview
-            onSubmit={onSubmit}
-            previousPage={this.previousPage}
-          />
-        )}
-      </>
-    );
+    return <>{this.renderContent()}</>;
   }
 }
 

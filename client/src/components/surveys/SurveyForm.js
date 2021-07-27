@@ -4,17 +4,12 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { reduxForm, Field } from "redux-form";
 import SurveyField from "./SurveyField";
-
-const FIELDS = [
-  { name: "title", label: "Survey Title" },
-  { name: "subject", label: "Subject Line" },
-  { name: "body", label: "Email Body" },
-  { name: "emails", label: "Recipients List" },
-];
+import validateEmails from "../../utils/validateEmails";
+import formFields from "./formField";
 
 class SurveyForm extends Component {
   renderFields() {
-    return _.map(FIELDS, ({ name, label }) => {
+    return _.map(formFields, ({ name, label }) => {
       return (
         <Field
           type='text'
@@ -30,8 +25,7 @@ class SurveyForm extends Component {
   render() {
     return (
       <>
-        <form
-          onSubmit={this.props.handleSubmit((values) => console.log(values))}>
+        <form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}>
           {this.renderFields()}
           <Link to='/surveys' className='red btn-flat white-text'>
             Cancel
@@ -48,17 +42,13 @@ class SurveyForm extends Component {
 
 function validate(values) {
   const errors = {};
-  _.each(FIELDS, ({ name }) => {
+  _.each(formFields, ({ name }) => {
     if (!values[name]) {
       errors[name] = "You must provide a value";
     }
   });
   if (!errors.emails) {
-    values.emails.split(",").map((email) => {
-      if (!email.includes("@")) {
-        errors.emails = "You must provide a valid email address";
-      }
-    });
+    errors.emails = validateEmails(values.emails);
   }
   return errors;
 }
@@ -66,4 +56,5 @@ function validate(values) {
 export default reduxForm({
   validate,
   form: "surveyForm",
+  destroyOnUnmount: false,
 })(SurveyForm);
