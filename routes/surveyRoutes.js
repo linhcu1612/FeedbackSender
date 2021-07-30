@@ -39,7 +39,7 @@ module.exports = (app) => {
         }
       })
       .compact()
-      .uniqBy(compactEvents, "email", "surveyId")
+      .uniqBy("email", "surveyId")
       .each(({ surveyId, email, choice }) => {
         Survey.updateOne(
           {
